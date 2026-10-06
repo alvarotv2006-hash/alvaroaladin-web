@@ -45,13 +45,13 @@ function Admin() {
 
   async function setStatus(id: string, status: string) {
     const { error } = await supabase.from("contact_messages").update({ status }).eq("id", id);
-    if (error) return toast.error("No se pudo actualizar");
+    if (error) { toast.error("No se pudo actualizar"); return; }
     qc.invalidateQueries({ queryKey: ["messages"] });
   }
   async function remove(id: string) {
     if (!confirm("¿Borrar este mensaje?")) return;
     const { error } = await supabase.from("contact_messages").delete().eq("id", id);
-    if (error) return toast.error("No se pudo borrar");
+    if (error) { toast.error("No se pudo borrar"); return; }
     qc.invalidateQueries({ queryKey: ["messages"] });
   }
   async function signOut() {

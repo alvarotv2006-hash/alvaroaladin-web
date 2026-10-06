@@ -68,7 +68,7 @@ const STEPS = [
   ["02", "Nos envías los datos", "Logo, fotos, horarios y servicios. Te guiamos."],
   ["03", "Diseño y desarrollo", "Montamos la web y las automatizaciones en tiempo récord."],
   ["04", "Publicación", "Tu web online, con dominio y lista para vender."],
-];
+] as const;
 
 const FAQS = [
   ["¿De verdad está lista en 12-36 horas?", "Sí. El plazo empieza cuando nos envías toda la información (textos, fotos, logo). Si te falta algo, te ayudamos a prepararlo."],
@@ -76,7 +76,7 @@ const FAQS = [
   ["¿Puedo pedir cambios después?", "Durante el primer año corregimos cualquier fallo sin coste. Los cambios de contenido pequeños también están incluidos."],
   ["¿Trabajáis con negocios de toda España?", "Sí, trabajamos 100% en remoto. Todo se hace por videollamada, WhatsApp y email."],
   ["¿Qué hace el asistente con IA?", "Responde a tus clientes en la web o WhatsApp con tus precios, horarios y servicios, y te avisa cuando alguien quiere reservar."],
-];
+] as const;
 
 function Index() {
   const [plan, setPlan] = useState("Web Profesional");
@@ -154,10 +154,10 @@ function Index() {
           <h2 className="mt-3 max-w-2xl text-4xl font-extrabold tracking-tight md:text-5xl">Cercanía artesanal, velocidad de software</h2>
           <p className="mt-4 max-w-2xl text-muted-foreground">Somos un estudio ágil de dos personas. Fusionamos ingeniería de IA moderna con diseño web limpio, para autónomos y pymes que buscan resultados sin complicaciones.</p>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {[
+            {([
               ["Aladin", "IA & Automatizaciones", "Arquitectura de datos, agentes inteligentes en WhatsApp, modelos de lenguaje y automatización de procesos para ahorrar horas a tu negocio.", "Python • IA • Automatización • Cloud"],
               ["Álvaro", "Frontend & UI/UX", "Que tu web luzca impecable en cualquier pantalla, cargue en menos de un segundo y convierta visitas en llamadas o reservas.", "Diseño • Rendimiento • SEO • UX"],
-            ].map(([n, r, d, s]) => (
+            ] as const).map(([n, r, d, s]) => (
               <div key={n} className="flex gap-5 rounded-2xl bg-card p-7 shadow-soft">
                 <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-primary text-2xl font-extrabold text-primary-foreground">{n[0]}</span>
                 <div>
