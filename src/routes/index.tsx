@@ -274,6 +274,10 @@ function Index() {
             <h2 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Empecemos tu web hoy</h2>
             <p className="mt-4 text-muted-foreground">Cuéntanos tu negocio y te respondemos en menos de 24 horas con una propuesta sin compromiso.</p>
             <Button asChild variant="soft" size="xl" className="mt-8"><a href={WA} ><Mail /> Prefiero email</a></Button>
+            <p className="mt-4 text-sm text-muted-foreground">
+              ¿No quieres rellenar el formulario? Escríbenos directamente a{" "}
+              <a href={WA} className="font-semibold text-primary underline-offset-4 hover:underline">atvama0605@gmail.com</a>
+            </p>
           </div>
           <ContactForm plan={plan} onPlanChange={setPlan} />
         </div>
