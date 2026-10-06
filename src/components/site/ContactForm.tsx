@@ -99,7 +99,7 @@ export function ContactForm({ plan, onPlanChange }: { plan: string; onPlanChange
       <div className="space-y-1.5">
         <Label htmlFor="message">Mensaje *</Label>
         <Textarea id="message" name="message" rows={4} maxLength={2000} />
-        {errors.message && <p className="text-xs text-destructive">{errors.message}</p>}
+        {errors["message"] && <p className="text-xs text-destructive">{errors["message"]}</p>}
       </div>
       <Button type="submit" variant="hero" size="xl" className="w-full" disabled={sending}>
         <Send /> {sending ? "Enviando..." : "Enviar solicitud"}
