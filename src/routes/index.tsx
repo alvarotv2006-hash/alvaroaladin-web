@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Zap, BadgeEuro, ShieldCheck, Terminal, Globe, CalendarDays, MessageCircle, Bot, Cloud,
+  Zap, BadgeEuro, ShieldCheck, Terminal, Globe, CalendarDays, MessageCircle, Mail, Bot, Cloud,
   Wrench, MapPin, PenLine, Scissors, Flower2, Stethoscope, Car, UtensilsCrossed, Store,
   Check, Eye, User, Menu, X,
 } from "lucide-react";
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const WA = "https://wa.me/34600000000?text=Hola,%20quiero%20informaci%C3%B3n%20para%20mi%20web";
+const WA = "mailto:atvama0605@gmail.com?subject=Quiero%20informaci%C3%B3n%20para%20mi%20web";
 
 const NAV = [
   ["Nosotros", "#nosotros"], ["Servicios", "#servicios"], ["Clientes", "#clientes"],
@@ -132,7 +132,7 @@ function Index() {
             Webs profesionales y automatizaciones con inteligencia artificial para cualquier negocio de España, a precios económicos. Sin cuotas mensuales ni ataduras.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild variant="hero" size="xl"><a href={WA} target="_blank" rel="noreferrer"><MessageCircle /> Habla con nosotros por WhatsApp</a></Button>
+            <Button asChild variant="hero" size="xl"><a href={WA} ><Mail /> Escríbenos por email</a></Button>
             <Button asChild variant="soft" size="xl"><a href="#tarifas"><Eye /> Ver tarifas</a></Button>
           </div>
           <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -273,7 +273,7 @@ function Index() {
             <p className="eyebrow">07 / Contacto</p>
             <h2 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Empecemos tu web hoy</h2>
             <p className="mt-4 text-muted-foreground">Cuéntanos tu negocio y te respondemos en menos de 24 horas con una propuesta sin compromiso.</p>
-            <Button asChild variant="soft" size="xl" className="mt-8"><a href={WA} target="_blank" rel="noreferrer"><MessageCircle /> Prefiero WhatsApp</a></Button>
+            <Button asChild variant="soft" size="xl" className="mt-8"><a href={WA} ><Mail /> Prefiero email</a></Button>
           </div>
           <ContactForm plan={plan} onPlanChange={setPlan} />
         </div>
@@ -286,8 +286,8 @@ function Index() {
         </div>
       </footer>
 
-      <a href={WA} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="fixed bottom-5 right-5 z-50 grid size-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-primary transition-transform hover:scale-105">
-        <MessageCircle className="size-6" />
+      <a href={WA} aria-label="Email" className="fixed bottom-5 right-5 z-50 grid size-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-primary transition-transform hover:scale-105">
+        <Mail className="size-6" />
       </a>
     </div>
   );

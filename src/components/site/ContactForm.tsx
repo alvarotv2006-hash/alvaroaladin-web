@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { CheckCircle2, Send, Sparkles } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { CheckCircle2, Send } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
-import { submitAndGenerateDemo } from "@/lib/demo.functions";
+import { submitContact } from "@/lib/demo.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,8 +22,8 @@ export const PLANS = ["Web Exprés", "Web Profesional", "Web + IA", "Solo automa
 
 export function ContactForm({ plan, onPlanChange }: { plan: string; onPlanChange: (p: string) => void }) {
   const [sending, setSending] = useState(false);
-  const [result, setResult] = useState<{ reply: string; demoId: string | null } | null>(null);
-  const submitFn = useServerFn(submitAndGenerateDemo);
+  const [result, setResult] = useState<{ reply: string } | null>(null);
+  const submitFn = useServerFn(submitContact);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -56,13 +55,6 @@ export function ContactForm({ plan, onPlanChange }: { plan: string; onPlanChange
         <CheckCircle2 className="size-12 text-success" />
         <h3 className="mt-4 text-xl font-bold">¡Mensaje recibido!</h3>
         <p className="mt-3 whitespace-pre-line text-muted-foreground">{result.reply}</p>
-        {result.demoId && (
-          <Button asChild variant="hero" className="mt-6">
-            <Link to="/demo/$id" params={{ id: result.demoId }} target="_blank">
-              <Sparkles /> Ver tu demo
-            </Link>
-          </Button>
-        )}
         <Button variant="soft" className="mt-3" onClick={() => setResult(null)}>Enviar otro</Button>
       </div>
     );
@@ -105,7 +97,7 @@ export function ContactForm({ plan, onPlanChange }: { plan: string; onPlanChange
         {errors["message"] && <p className="text-xs text-destructive">{errors["message"]}</p>}
       </div>
       <Button type="submit" variant="hero" size="xl" className="w-full" disabled={sending}>
-        <Send /> {sending ? "Creando tu demo (≈30 s)..." : "Enviar y ver mi demo"}
+        <Send /> {sending ? "Enviando..." : "Enviar mensaje"}
       </Button>
     </form>
   );
