@@ -105,7 +105,7 @@ export function ContactForm({ plan, onPlanChange }: { plan: string; onPlanChange
         {errors["message"] && <p className="text-xs text-destructive">{errors["message"]}</p>}
       </div>
       <Button type="submit" variant="hero" size="xl" className="w-full" disabled={sending}>
-        <Send /> {sending ? "Enviando..." : "Enviar solicitud"}
+        <Send /> {sending ? "Creando tu demo (≈30 s)..." : "Enviar y ver mi demo"}
       </Button>
     </form>
   );
