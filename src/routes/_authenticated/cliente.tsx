@@ -84,6 +84,9 @@ function Cliente() {
             </article>
           ))}
         </div>
+        <div className="mt-10">
+          <ChangePassword />
+        </div>
       </main>
     </div>
   );

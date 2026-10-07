@@ -178,7 +178,10 @@ function Admin() {
                 </article>
               ))}
             </div>
-            <UsersPanel me={user.id} />
+             <UsersPanel me={user.id} />
+            <div className="mt-14 max-w-xl">
+              <ChangePassword />
+            </div>
           </>
         )}
       </main>
