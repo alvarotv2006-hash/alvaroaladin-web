@@ -51,7 +51,16 @@ function AuthPage() {
     } else {
       const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/auth" } });
       setLoading(false);
-      if (error) { toast.error(error.message); return; }
+      if (error) {
+        const msg = error.message.toLowerCase();
+        if (msg.includes("already registered") || msg.includes("already been registered") || msg.includes("user already exists")) {
+          toast.error("Ya existe una cuenta con ese email. Entra con tu contraseña.");
+          setMode("in");
+        } else {
+          toast.error(error.message);
+        }
+        return;
+      }
       toast.success("Revisa tu email para confirmar la cuenta");
       setMode("in");
     }
