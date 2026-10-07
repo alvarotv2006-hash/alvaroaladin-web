@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { LogOut, ExternalLink, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { ChangePassword } from "@/components/ChangePassword";
 
 export const Route = createFileRoute("/_authenticated/cliente")({
   head: () => ({
