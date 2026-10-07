@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           business: string | null
           created_at: string
+          demo_url: string | null
           email: string
           id: string
           message: string
@@ -29,6 +30,7 @@ export type Database = {
         Insert: {
           business?: string | null
           created_at?: string
+          demo_url?: string | null
           email: string
           id?: string
           message: string
@@ -40,6 +42,7 @@ export type Database = {
         Update: {
           business?: string | null
           created_at?: string
+          demo_url?: string | null
           email?: string
           id?: string
           message?: string
@@ -109,7 +112,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin"
+      app_role: "admin" | "cliente"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -237,7 +240,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin"],
+      app_role: ["admin", "cliente"],
     },
   },
 } as const

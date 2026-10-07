@@ -12,3 +12,6 @@
 ## Architecture rules
 - Contact requests are inserted from the browser into `contact_messages` (anon INSERT only); reads/updates are admin-only via `has_role` RLS — keeps the form backend-free and the data private.
 - Admin access is granted by a `user_roles` row; the first signed-up user becomes admin via trigger — avoids hardcoding emails.
+- Clients see their own `contact_messages` via an RLS policy matching the row email to the JWT email — no extra linking table needed.
+- User management (list/delete/role toggle) runs in `src/lib/users.functions.ts` with an admin check before using the admin client — the browser can't touch auth users.
+- The public chatbot streams from `/api/public/chat` via the AI gateway with a fixed studio prompt — keeps the AI key server-side.

@@ -1,9 +1,58 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { LogOut, Trash2, Mail, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { listUsers, setUserRole, deleteUser } from "@/lib/users.functions";
+
+function UsersPanel({ me }: { me: string }) {
+  const qc = useQueryClient();
+  const list = useServerFn(listUsers);
+  const setRole = useServerFn(setUserRole);
+  const del = useServerFn(deleteUser);
+  const users = useQuery({ queryKey: ["users"], queryFn: () => list() });
+  async function run(p: Promise<unknown>, ok: string) {
+    try { await p; toast.success(ok); qc.invalidateQueries({ queryKey: ["users"] }); }
+    catch (e) { toast.error(e instanceof Error ? e.message : "Error"); }
+  }
+  return (
+    <section className="mt-14">
+      <h2 className="text-2xl font-extrabold">Usuarios</h2>
+      <div className="mt-4 overflow-x-auto rounded-xl bg-card shadow-soft">
+        <table className="w-full text-sm">
+          <thead className="text-left font-mono text-xs uppercase text-muted-foreground">
+            <tr><th className="p-3">Email</th><th className="p-3">Alta</th><th className="p-3">Roles</th><th className="p-3 text-right">Acciones</th></tr>
+          </thead>
+          <tbody>
+            {users.isLoading && <tr><td className="p-3 text-muted-foreground" colSpan={4}>Cargando...</td></tr>}
+            {(users.data ?? []).map((u) => {
+              const isAdmin = u.roles.includes("admin");
+              return (
+                <tr key={u.id} className="border-t border-border">
+                  <td className="p-3">{u.email}{u.id === me && <span className="ml-2 text-xs text-muted-foreground">(tú)</span>}</td>
+                  <td className="p-3 text-muted-foreground">{new Date(u.created_at).toLocaleDateString("es-ES")}</td>
+                  <td className="p-3">{isAdmin ? <span className="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">admin</span> : <span className="rounded-full bg-secondary px-2 py-0.5 text-xs">cliente</span>}</td>
+                  <td className="p-3 text-right">
+                    {u.id !== me && (
+                      <div className="flex justify-end gap-2">
+                        <Button size="sm" variant="outline" onClick={() => run(setRole({ data: { userId: u.id, role: "admin", enabled: !isAdmin } }), isAdmin ? "Ahora es cliente" : "Ahora es admin")}>
+                          {isAdmin ? "Quitar admin" : "Hacer admin"}
+                        </Button>
+                        <Button size="icon" variant="ghost" aria-label="Eliminar usuario" onClick={() => { if (confirm(`¿Eliminar a ${u.email}?`)) run(del({ data: { userId: u.id } }), "Usuario eliminado"); }}><Trash2 /></Button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -52,6 +101,12 @@ function Admin() {
     if (!confirm("¿Borrar este mensaje?")) return;
     const { error } = await supabase.from("contact_messages").delete().eq("id", id);
     if (error) { toast.error("No se pudo borrar"); return; }
+    qc.invalidateQueries({ queryKey: ["messages"] });
+  }
+  async function setDemo(id: string, url: string) {
+    const { error } = await supabase.from("contact_messages").update({ demo_url: url.trim() || null }).eq("id", id);
+    if (error) { toast.error("No se pudo guardar la demo"); return; }
+    toast.success(url.trim() ? "Demo adjuntada" : "Demo quitada");
     qc.invalidateQueries({ queryKey: ["messages"] });
   }
   async function signOut() {
@@ -114,10 +169,15 @@ function Admin() {
                     </div>
                   </div>
                   <p className="mt-3 whitespace-pre-wrap text-sm">{m.message}</p>
+                  <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); setDemo(m.id, new FormData(e.currentTarget).get("demo") as string); }}>
+                    <input name="demo" type="url" defaultValue={m.demo_url ?? ""} placeholder="Enlace de la demo (el cliente lo verá en su área)" className="h-9 flex-1 rounded-md border border-input bg-background px-3 text-sm" />
+                    <Button type="submit" size="sm" variant="soft">Adjuntar demo</Button>
+                  </form>
                   <p className="mt-3 font-mono text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString("es-ES")}</p>
                 </article>
               ))}
             </div>
+            <UsersPanel me={user.id} />
           </>
         )}
       </main>

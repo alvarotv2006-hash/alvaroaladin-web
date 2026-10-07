@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ContactForm } from "@/components/site/ContactForm";
+import { ChatWidget } from "@/components/site/ChatWidget";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -290,6 +291,7 @@ function Index() {
         </div>
       </footer>
 
+      <ChatWidget />
       <a href={WA} aria-label="Email" className="fixed bottom-5 right-5 z-50 grid size-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-primary transition-transform hover:scale-105">
         <Mail className="size-6" />
       </a>
