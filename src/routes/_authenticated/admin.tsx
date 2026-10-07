@@ -6,6 +6,7 @@ import { LogOut, Trash2, Mail, Phone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { listUsers, setUserRole, deleteUser } from "@/lib/users.functions";
+import { ChangePassword } from "@/components/ChangePassword";
 
 function UsersPanel({ me }: { me: string }) {
   const qc = useQueryClient();
@@ -177,7 +178,10 @@ function Admin() {
                 </article>
               ))}
             </div>
-            <UsersPanel me={user.id} />
+             <UsersPanel me={user.id} />
+            <div className="mt-14 max-w-xl">
+              <ChangePassword />
+            </div>
           </>
         )}
       </main>
