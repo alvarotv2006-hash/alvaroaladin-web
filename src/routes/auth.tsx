@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { emailExists } from "@/lib/email-check.functions";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -49,8 +50,22 @@ function AuthPage() {
       if (error) { toast.error("Email o contraseña incorrectos"); return; }
       goHome(data.user.id);
     } else {
-      const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/auth" } });
+      try {
+        const { exists } = await emailExists({ data: { email } });
+        if (exists) {
+          setLoading(false);
+          toast.error("Ya existe una cuenta con ese email. Entra con tu contraseña.");
+          setMode("in");
+          return;
+        }
+      } catch { /* sigue con el registro */ }
+      const { data: su, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/auth" } });
       setLoading(false);
+      if (!error && su.user && (su.user.identities?.length ?? 0) === 0) {
+        toast.error("Ya existe una cuenta con ese email. Entra con tu contraseña.");
+        setMode("in");
+        return;
+      }
       if (error) {
         const msg = error.message.toLowerCase();
         if (msg.includes("already registered") || msg.includes("already been registered") || msg.includes("user already exists")) {
